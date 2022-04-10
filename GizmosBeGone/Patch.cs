@@ -12,21 +12,17 @@ namespace GizmosBeGone
         public override string Name => "Gizmos be gone";
         public override string Author => "LeCloutPanda";
         public override string Version => "1.0.0";
-
-        private static string randomId;
-
+        
         public override void OnEngineInit()
         {
-            Random rand = new Random();
-            randomId = rand.Next(32767).ToString();
-
             Harmony harmony = new Harmony("net.LeCloutPanda.ClearGizmo");
             harmony.PatchAll();
         }
 
-        [HarmonyPatch(typeof(DevToolTip), "GenerateMenuItems")]
-        class GizmoPatcher
+        [HarmonyPatch]
+        class Patch
         {
+            [HarmonyPatch(typeof(DevToolTip), "GenerateMenuItems")]
             [HarmonyPostfix]
             static void AddCustomContextMenuItem(ref DevToolTip __instance, CommonTool tool, ContextMenu menu)
             {
@@ -51,16 +47,12 @@ namespace GizmosBeGone
                     }
                 };
             }
-        }
-
-        [HarmonyPatch(typeof(SlotGizmo), "OnAttach")]
-        class AddTagToGizmo
-        {
             // Self explanatory, just grab the slot on gizmo creation and set its tag
             [HarmonyPostfix]
+            [HarmonyPatch(typeof(SlotGizmo), "OnAttach")]
             static void ModifyGizmoSlot(ref SlotGizmo __instance)
             {
-                __instance.Slot.Tag = randomId;
+                __instance.Slot.Tag = __instance.LocalUser.userName.Value;
             }
         }
     }
