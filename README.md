@@ -1,4 +1,4 @@
-# GIzmos be gone
+# Gizmos be gone
 [NeosModLoader](https://github.com/zkxs/NeosModLoader) mod for [Neos](https://neos.com/) that adds a custom Context menu item for the Dev tip to clear your own gizmos without clearing other users Gizmos
  
 ## Installation
